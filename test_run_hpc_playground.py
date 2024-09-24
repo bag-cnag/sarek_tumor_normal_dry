@@ -115,31 +115,9 @@ def test_put_pipeline():
         "pipelines": "sarek,pcgx,annotatesvs,gatk_mt,qualitycontrols",
         "output_format":  {
     "snvs": [{"type": "file",
-              "path": "{wd}/results/variant_calling/haplotypecaller/{experiment}/{experiment}.haplotypecaller.filtered.vcf.gz"},
+              "path": "{wd}/output/results/variant_calling/haplotypecaller/{experiment}/{experiment}.haplotypecaller.filtered.vcf.gz"},
              {"type": "index", "index": "cnag_{task_id}"}],
-    "cnvs": [{"type": "file", "path": "{wd}/results/annotsv/cnvkit/{experiment}/{experiment}.tsv"},
-             {"type": "index", "index": "cnag_{task_id}"}],
-    "svs": [{"type": "file", "path": "{wd}/results/annotsv/manta/{experiment}/{experiment}.tsv"},
-            {"type": "index", "index": "cnag_{task_id}"}],
-    "pharmacogenomics": [
-        {"type": "file", "path": "{wd}/results/pharmacogenomics/{experiment}/results_gathered_alleles.tsv"},
-        {"type": "index", "index": "cnag_{task_id}"}],
-    "multiqc": [{"type": "file", "path": "{wd}/results/multiqc/multiqc_report.html"},
-                {"type": "index", "index": "cnag_{task_id}"}],
-    "cram": [{"type": "file", "path": "{wd}/results/preprocessing/recalibrated/{experiment}/{experiment}.recal.cram"},
-             {"type": "index", "index": "cnag_{task_id}"}],
-    "qc_checks": [{"type": "file", "path": "{wd}/annotations.json"},
-                  {"type": "index", "index": "cnag_{task_id}"},
-                  {"type": "file", "path": "{wd}/elastic.json"},
-                  {"type": "index", "index": "cnag_{task_id}"},
-                  {"type": "file", "path": "{wd}/sequencing_data_quality_check.json"},
-                  {"type": "index", "index": "cnag_{task_id}"},
-                  {"type": "file", "path": "{wd}/mapping_qc.json"},
-                  {"type": "index", "index": "cnag_{task_id}"},
-                  {"type": "file", "path": "{wd}/variant.json"},
-                  {"type": "index", "index": "cnag_{task_id}"},
-                  {"type": "file", "path": "{wd}/workflow_complete.json"},
-                  {"type": "index", "index": "cnag_{task_id}"}]
+
 }
       },
     }
@@ -147,7 +125,7 @@ def test_put_pipeline():
     pytest.pipeline_id = -1
     resp=requests.get(api_host+"/pipelines/", headers=headers)
     for pipeline in resp.json():
-        if pipeline['name']=='dry_tumor_only':                   
+        if pipeline['name']=='dry_tumor_normal':                   
            pytest.pipeline_id = pipeline['id']
 
     if  pytest.pipeline_id == -1:
