@@ -47,7 +47,7 @@ process variant_calling {
     message3 = "dd"
     create_file(params.outdir+"/exp.vcf")
     //SNVs
-    create_file(params.outdir+"/results/variant_calling/haplotypecaller/"+params.control_experiment_id+"/"+params.control_experiment_id+".haplotypecaller.filtered.vcf.gz")
+    create_file(params.outdir+"/results/variant_calling/haplotypecaller/"+params.tumor_experiment_id+"_vs_"+params.control_experiment_id+"/"+params.tumor_experiment_id+"_vs_"+params.control_experiment_id+".haplotypecaller.filtered.vcf.gz")
      //CNVs
     create_file(params.outdir+"/results/annotsv/cnvkit/"+params.control_experiment_id+"/"+params.control_experiment_id+".tsv")
      //SVs
