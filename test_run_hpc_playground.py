@@ -1,9 +1,9 @@
 import requests
 #import jwt
 import os
-
 from keycloak import KeycloakOpenID
 import pytest
+#from definition import description
 def pytest_namespace():
     return {'plan_id': 0 ,"dar_id": None ,  "analysis_type_id":0, "pipeline_id":-1}
 api_host="https://playground.gpapdev.cnag.eu/analysis_service/"
@@ -40,7 +40,7 @@ def test_get_analysis_type():
 def test_get_resource():
     resp=requests.get(api_host+"/resources/", headers=headers)
     for resource in resp.json()['data']:
-        if resource['name']=='dry':
+        if resource['name']=='dry_new':
            
            pytest.resource_id= resource['id']
            assert True
@@ -49,10 +49,11 @@ def test_put_pipeline():
     pipeline_def={
       "analysis_type": "somatic_tumor_normal",
       "analysis_type_id": pytest.analysis_type_id,
-      "name": "dry_tumor_normal",
+      "name": "dry_tumor_normal_description",
       "data": {
         "repo": "bag-cnag/sarek_tumor_normal_dry",
         "step": "mapping",
+        "description":"",
         "steps": [
           {
             "step": "File availability and integrity",
@@ -111,12 +112,18 @@ def test_put_pipeline():
           }
         ],
         "tools": "cnvkit,manta,haplotypecaller,strelka,expansionhunter,stripy,fullmetrics",
-        "release": "v0.1",
+        "release": "v0.3",
         "pipelines": "sarek,pcgx,annotatesvs,gatk_mt,qualitycontrols",
         "output_format":  {
     "snvs": [{"type": "file",
               "path": "{wd}/output/results/variant_calling/haplotypecaller/{experiment}/{experiment}.haplotypecaller.filtered.vcf.gz"},
              {"type": "index", "index": "cnag_{task_id}"}],
+            "logs":[
+             {"type":"file", "path":"{wd}/logfile.txt"}
+            ],
+            "multiqc":[
+              {"type":"file","path":"{wd}/output/results/multiqc/multiqc_report.html"}
+            ]
 
 }
       },
@@ -125,7 +132,7 @@ def test_put_pipeline():
     pytest.pipeline_id = -1
     resp=requests.get(api_host+"/pipelines/", headers=headers)
     for pipeline in resp.json():
-        if pipeline['name']=='dry_tumor_normal':                   
+        if pipeline['name']=='dry_tumor_normal_description':                   
            pytest.pipeline_id = pipeline['id']
 
     if  pytest.pipeline_id == -1:
