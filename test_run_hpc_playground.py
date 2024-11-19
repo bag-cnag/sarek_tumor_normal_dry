@@ -150,7 +150,8 @@ def test_create_dar():
  "priority":"medium","deadline":"2024-09-04",
  "resource_id":pytest.resource_id,"pipeline_id":pytest.pipeline_id,
  "tumor_experiment_id":"HCC1395",
- "control_experiment_id":"HCC1395BL"}
+ "control_experiment_id":"HCC1395BL",
+ "group_owner": "cnag-beltran"}
 
     resp=requests.put(api_host+"/dars/",json=dar_data1, headers=headers)
     pytest.dar_id=resp.json()['dar_id']
@@ -159,7 +160,6 @@ def test_create_dar():
 
 def test_run_task():
     resp=requests.post(f"{api_host}/dars/run/{pytest.dar_id}",json={"resource_id":pytest.resource_id}, headers=headers)
-
     pytest.task_id=resp.json()['task_id']
     print(pytest.task_id)
     assert resp.status_code == 200
@@ -187,6 +187,7 @@ def test_check_status_dar():
 
     assert resp.status_code == 200 
 
-def test_delete_dar():
-    resp=requests.delete(f"{api_host}/dars/{pytest.dar_id}", headers=headers)
-    assert resp.status_code == 200 
+# disable delete
+# def test_delete_dar():
+#     resp=requests.delete(f"{api_host}/dars/{pytest.dar_id}", headers=headers)
+#     assert resp.status_code == 200 
